@@ -152,6 +152,6 @@
     <value>토글 도구</value>
   </data>
   <data name="options_OpenMenuNetworks" xml:space="preserve">
-    <value>Only for networks</value>
+    <value>네트워크에만 적용</value>
   </data>
 </root>
