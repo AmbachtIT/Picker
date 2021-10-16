@@ -39,6 +39,9 @@
       <HintPath>C:\Games\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\ColossalManaged.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="EManagersLib.API">
+      <HintPath>C:\Users\Rob\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods\EML\EManagersLib.API.dll</HintPath>
+    </Reference>
     <Reference Include="ICities">
       <HintPath>C:\Games\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\ICities.dll</HintPath>
       <Private>False</Private>
@@ -64,6 +67,8 @@
       <DependentUpon>Localize.resx</DependentUpon>
     </Compile>
     <Compile Include="OptionsKeymapping.cs" />
+    <Compile Include="PropInstance.cs" />
+    <Compile Include="PropLayer.cs" />
     <Compile Include="UIPickerButton.cs" />
     <Compile Include="ResourceLoader.cs" />
     <Compile Include="Db.cs" />

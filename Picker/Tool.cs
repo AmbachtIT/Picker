@@ -1,5 +1,6 @@
 ﻿using ColossalFramework;
 using ColossalFramework.UI;
+using EManagersLib.API;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -33,6 +34,8 @@ namespace Picker
             enabled = false;
 
             m_button = UIView.GetAView().AddUIComponent(typeof(UIPickerButton)) as UIPickerButton;
+
+            PropLayer.Initialise();
         }
 
         private Dictionary<string, UIComponent> _componentCache = new Dictionary<string, UIComponent>();
@@ -72,17 +75,19 @@ namespace Picker
                 m_ignoreParkFlags = DistrictPark.Flags.All
             };
 
-            RayCast(input, out RaycastOutput output);
+            //RayCast(input, out RaycastOutput output);
+            PropAPI.ToolBaseRayCast(input, out EToolBase.RaycastOutput output, RayCast);
 
             // Set the world mouse position (useful for my implementation of StepOver)
             mouseCurrentPosition = output.m_hitPos;
 
             objectBuffer.Clear();
 
-            if (output.m_netSegment != 0) objectBuffer.Add(new InstanceID() { NetSegment = output.m_netSegment });
+            Debug.Log($"AAA10 {output.m_treeInstance}, {output.m_propInstance}");
+            if (output.m_netSegment != 0) objectBuffer.Add(new InstanceID() { NetSegment = (ushort)output.m_netSegment });
             if (output.m_treeInstance != 0) objectBuffer.Add(new InstanceID() { Tree = output.m_treeInstance });
-            if (output.m_propInstance != 0) objectBuffer.Add(new InstanceID() { Prop = output.m_propInstance });
-            if (output.m_building != 0) objectBuffer.Add(new InstanceID() { Building = output.m_building });
+            if (output.m_propInstance != 0) objectBuffer.Add(PropLayer.Manager.GetInstanceID(output.m_propInstance));
+            if (output.m_building != 0) objectBuffer.Add(new InstanceID() { Building = (ushort)output.m_building });
 
             objectBuffer.Sort((a, b) => Vector3.Distance(a.Position(), mouseCurrentPosition).CompareTo(Vector3.Distance(b.Position(), mouseCurrentPosition)));
             if (objectBuffer.Count > 0)
@@ -208,6 +213,7 @@ namespace Picker
 
             if (pInfo is PropInfo propInfo)
             {
+                Debug.Log($"AAA3 {(propInfo.m_isDecal ? "Decal" : "Prop")}, {propInfo.name}");
                 FindIt.Find((propInfo.m_isDecal ? "Decal" : "Prop"), propInfo);
                 return;
             }
@@ -415,11 +421,6 @@ namespace Picker
                 NetSegment hoveredSegment = hoveredId.NetSegment.S();
                 NetTool.RenderOverlay(cameraInfo, ref hoveredSegment, hoverColor, hoverColor);
             }
-            //else if (hoveredObject.NetNode != 0 && hoveredObject.NetNode < 32768)
-            //{
-            //    NetNode hoveredNode = hoveredObject.NetNode.N();
-            //    RenderManager.instance.OverlayEffect.DrawCircle(cameraInfo, hoverColor, hoveredNode.m_position, Mathf.Max(6f, hoveredNode.Info.m_halfWidth * 2f), -1f, 1280f, false, true);
-            //}
             else if (hoveredId.Building != 0)
             {
                 Building hoveredBuilding = hoveredId.Building.B();
@@ -436,9 +437,10 @@ namespace Picker
                 TreeInstance hoveredTree = hoveredId.Tree.T();
                 TreeTool.RenderOverlay(cameraInfo, hoveredTree.Info, hoveredTree.Position, hoveredTree.Info.m_minScale, hoverColor);
             }
-            else if (hoveredId.Prop != 0)
+            else if (PropLayer.Manager.GetId(hoveredId) != 0)
             {
-                PropInstance hoveredProp = hoveredId.Prop.P();
+                IProp hoveredProp = PropLayer.Manager.Buffer(hoveredId);
+                Debug.Log($"AAA5 {PropLayer.Manager.GetId(hoveredId)}, {hoveredProp.Info.name}, {hoveredProp.Position}");
                 PropTool.RenderOverlay(cameraInfo, hoveredProp.Info, hoveredProp.Position, hoveredProp.Info.m_minScale, hoveredProp.Angle, hoverColor);
             }
         }

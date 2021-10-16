@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using EManagersLib.API;
+using UnityEngine;
 
 namespace Picker
 {
@@ -34,10 +35,10 @@ namespace Picker
             return NetManager.instance.m_nodes.m_buffer[n];
         }
 
-        public static PropInstance P(this ushort p)
+        public static IProp P(this uint p)
         {
             //Debug.Log(p);
-            return PropManager.instance.m_props.m_buffer[p];
+            return PropLayer.Manager.Buffer(p);
         }
 
         public static Building B(this ushort b)
@@ -61,7 +62,7 @@ namespace Picker
         {
             if (id.NetSegment != 0) return id.NetSegment.S().m_middlePosition;
             if (id.NetNode != 0 && id.NetNode < 32768) return id.NetNode.N().m_position;
-            if (id.Prop != 0) return id.Prop.P().Position;
+            if (PropLayer.Manager.GetId(id) != 0) return PropLayer.Manager.Buffer(id).Position;
             if (id.Building != 0) return id.Building.B().m_position;
             if (id.Tree != 0) return id.Tree.T().Position;
 
@@ -72,7 +73,7 @@ namespace Picker
         {
             if (id.NetSegment != 0) return id.NetSegment.S().Info;
             if (id.NetNode != 0 && id.NetNode < 32768) return id.NetNode.N().Info;
-            if (id.Prop != 0) return id.Prop.P().Info;
+            if (PropLayer.Manager.GetId(id) != 0) return PropLayer.Manager.GetInfo(id);
             if (id.Building != 0) return id.Building.B().Info;
             if (id.Tree != 0) return id.Tree.T().Info;
 
