@@ -32,18 +32,18 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>C:\Games\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>H:\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ColossalManaged">
-      <HintPath>C:\Games\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\ColossalManaged.dll</HintPath>
+      <HintPath>H:\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\ColossalManaged.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="EManagersLib.API">
-      <HintPath>C:\Users\Rob\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods\EML\EManagersLib.API.dll</HintPath>
+      <HintPath>C:\Users\Quistar\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods\EManagersLib\EManagersLib.API.dll</HintPath>
     </Reference>
     <Reference Include="ICities">
-      <HintPath>C:\Games\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\ICities.dll</HintPath>
+      <HintPath>H:\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\ICities.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -53,7 +53,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>C:\Games\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>H:\SteamLibrary\steamapps\common\Cities_Skylines\Cities_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -67,8 +67,6 @@
       <DependentUpon>Localize.resx</DependentUpon>
     </Compile>
     <Compile Include="OptionsKeymapping.cs" />
-    <Compile Include="PropInstance.cs" />
-    <Compile Include="PropLayer.cs" />
     <Compile Include="UIPickerButton.cs" />
     <Compile Include="ResourceLoader.cs" />
     <Compile Include="Db.cs" />
