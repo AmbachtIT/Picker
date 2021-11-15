@@ -68,7 +68,6 @@ namespace Picker
 
         internal void Find(string filterEntry, PrefabInfo info)
         {
-            Debug.Log($"AAA2 {filterEntry}, {info.name}");
             //Debug.Log($"\nFIND filterEntry:{filterEntry}, info:{info.name}");
             if (Searchbox == null)
                 return;
@@ -84,7 +83,6 @@ namespace Picker
             // Find It 2 handles all this, thanks to sway
             if (Picker.FindItVersion == 2)
             {
-                Debug.Log($"AAA {info.name}");
                 FilterDropdown.selectedIndex = MenuIndex[filterEntry];
 
                 MethodInfo picker = Searchbox.GetType().GetMethod("Picker", new Type[] { typeof(PrefabInfo) });

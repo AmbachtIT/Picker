@@ -85,7 +85,6 @@ namespace Picker
 
             objectBuffer.Clear();
 
-            Debug.Log($"AAA10 {output.m_treeInstance}, {output.m_propInstance}");
             if (output.m_netSegment != 0) objectBuffer.Add(new InstanceID() { NetSegment = (ushort)output.m_netSegment });
             if (output.m_treeInstance != 0) objectBuffer.Add(new InstanceID() { Tree = output.m_treeInstance });
             /* EInstanceID and InstanceID can be used interchangeably whether EML exists or not */
@@ -218,7 +217,6 @@ namespace Picker
 
             if (pInfo is PropInfo propInfo)
             {
-                Debug.Log($"AAA3 {(propInfo.m_isDecal ? "Decal" : "Prop")}, {propInfo.name}");
                 FindIt.Find((propInfo.m_isDecal ? "Decal" : "Prop"), propInfo);
                 return;
             }
@@ -387,7 +385,6 @@ namespace Picker
                 return;
 
             UIButton button = FindComponentCached<UIButton>("FRT_" + buttonName);
-            //Debug.Log($"AAA {button.name} vis:{button.isVisible}, en:{button.enabled}");
             if (button is UIComponent)
             {
                 SimulateClick(button);
@@ -446,7 +443,6 @@ namespace Picker
             else if (PropAPI.GetPropID(hoveredId) != 0)
             {
                 PropInfo prefab = PropAPI.Wrapper.GetInfo(hoveredId);
-                Debug.Log($"AAA5 {prefab.name}");
                 PropTool.RenderOverlay(cameraInfo, prefab, PropAPI.Wrapper.GetPosition(hoveredId), prefab.m_minScale, PropAPI.Wrapper.GetAngle(hoveredId), hoverColor);
             }
         }

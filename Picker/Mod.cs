@@ -15,7 +15,7 @@ namespace Picker
     {
         static CultureInfo Culture => new CultureInfo(SingletonLite<LocaleManager>.instance.language == "zh" ? "zh-cn" : SingletonLite<LocaleManager>.instance.language);
 
-        public string Name => "Picker 1.6.0";
+        public string Name => "Picker 1.6.5";
         public string Description => Localize.mod_Description;
         public const string settingsFileName = "Picker";
 
