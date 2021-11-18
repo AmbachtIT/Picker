@@ -1,4 +1,5 @@
-﻿using ColossalFramework.Plugins;
+﻿using ColossalFramework;
+using ColossalFramework.Plugins;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Picker
     {
         internal bool ReflectIntoNS2()
         {
-            Assembly ass = Picker.GetAssembly("networkskins");
+            Assembly ass = GetNSAssembly();
             Type tPipette = ass.GetType("NetworkSkins.Tool.PipetteTool")
                 ?? throw new Exception("NS2 failed: tPipette is null");
             object ns2 = ass.GetType("NetworkSkins.GUI.NetworkSkinPanelController").GetField("Instance").GetValue(null) ?? throw new Exception("NS2 failed: ns2 is null");
@@ -32,25 +33,32 @@ namespace Picker
 
         internal static bool isNS2Installed()
         {
-            if (!PluginManager.instance.GetPluginsInfo().Any(mod => (
-                    mod.publishedFileID.AsUInt64 == 1758376843uL ||
-                    mod.name.Contains("NetworkSkins2") ||
-                    mod.name.Contains("1758376843")
-            ) && mod.isEnabled))
+            return (GetNSAssembly() != null);
+        }
+
+        internal static Assembly GetNSAssembly()
+        {
+            foreach (PluginManager.PluginInfo pluginInfo in Singleton<PluginManager>.instance.GetPluginsInfo())
             {
-                return false;
+                if (pluginInfo.userModInstance.GetType().Name.ToLower() == "networkskinsmod" && pluginInfo.isEnabled)
+                {
+                    // Network Skins 1 - unsupported - uses CimTools
+                    if (pluginInfo.GetAssemblies().Any(mod => mod.GetName().Name.ToLower() == "cimtools"))
+                    {
+                        break;
+                    }
+
+                    foreach (Assembly assembly in pluginInfo.GetAssemblies())
+                    {
+                        if (assembly.GetName().Name.ToLower() == "networkskins")
+                        {
+                            return assembly;
+                        }
+                    }
+                }
             }
 
-            if (PluginManager.instance.GetPluginsInfo().Any(mod =>
-                    mod.publishedFileID.AsUInt64 == 543722850uL ||
-                    (mod.name.Contains("NetworkSkins") && !mod.name.Contains("NetworkSkins2")) ||
-                    mod.name.Contains("543722850")
-            ))
-            {
-                return false;
-            }
-
-            return true;
+            return null;
         }
     }
 }

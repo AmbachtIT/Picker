@@ -41,7 +41,7 @@
     </Reference>
     <Reference Include="EManagersLib.API, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\Rob\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods\EML\EManagersLib.API.dll</HintPath>
+      <HintPath>C:\Users\Rob\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods - Deactivated\EML\EManagersLib.API.dll</HintPath>
     </Reference>
     <Reference Include="ICities">
       <HintPath>C:\Games\Steam\steamapps\common\Cities_Skylines\Cities_Data\Managed\ICities.dll</HintPath>
@@ -68,6 +68,8 @@
       <DependentUpon>Localize.resx</DependentUpon>
     </Compile>
     <Compile Include="OptionsKeymapping.cs" />
+    <Compile Include="PropInstance.cs" />
+    <Compile Include="PropLayer.cs" />
     <Compile Include="UIPickerButton.cs" />
     <Compile Include="ResourceLoader.cs" />
     <Compile Include="Db.cs" />

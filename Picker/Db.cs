@@ -1,5 +1,4 @@
-﻿using EManagersLib.API;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Picker
 {
@@ -42,7 +41,7 @@ namespace Picker
             ref Building building = ref BuildingManager.instance.m_buildings.m_buffer[b];
             while (building.m_parentBuilding > 0)
             {
-                building = BuildingManager.instance.m_buildings.m_buffer[building.m_parentBuilding];
+                building = ref BuildingManager.instance.m_buildings.m_buffer[building.m_parentBuilding];
             }
             return ref building;
         }
@@ -57,7 +56,7 @@ namespace Picker
         {
             if (id.NetSegment != 0) return id.NetSegment.S().m_middlePosition;
             if (id.NetNode != 0 && id.NetNode < 32768) return id.NetNode.N().m_position;
-            if (PropAPI.GetPropID(id) != 0) return PropAPI.Wrapper.GetPosition(id);
+            if (PropLayer.Manager.GetId(id) != 0) return PropLayer.Manager.GetPosition(id);
             if (id.Building != 0) return id.Building.B().m_position;
             if (id.Tree != 0) return id.Tree.T().Position;
 
@@ -68,7 +67,7 @@ namespace Picker
         {
             if (id.NetSegment != 0) return id.NetSegment.S().Info;
             if (id.NetNode != 0 && id.NetNode < 32768) return id.NetNode.N().Info;
-            if (PropAPI.GetPropID(id) != 0) return PropAPI.Wrapper.GetInfo(id);
+            if (PropLayer.Manager.GetId(id) != 0) return PropLayer.Manager.GetInfo(id);
             if (id.Building != 0) return id.Building.B().Info;
             if (id.Tree != 0) return id.Tree.T().Info;
 

@@ -1,6 +1,5 @@
 ﻿using ColossalFramework;
 using ColossalFramework.UI;
-using EManagersLib.API;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -22,9 +21,6 @@ namespace Picker
 
         public bool hasSteppedOver = false;
         public List<InstanceID> objectBuffer = new List<InstanceID>();
-        public int stepOverCounter = 0;
-        public Vector3 stepOverPosition = Vector3.zero;
-        public Vector3 mouseCurrentPosition = Vector3.zero;
 
         public static FindItManager FindIt = null;
 
@@ -35,8 +31,7 @@ namespace Picker
 
             m_button = UIView.GetAView().AddUIComponent(typeof(UIPickerButton)) as UIPickerButton;
 
-            PropAPI.Initialize();
-            //PropLayer.Initialise();
+            PropLayer.Initialise();
         }
 
         private Dictionary<string, UIComponent> _componentCache = new Dictionary<string, UIComponent>();
@@ -52,6 +47,12 @@ namespace Picker
             }
 
             return component as T;
+        }
+
+        internal RaycastOutput GetRaycast(RaycastInput input)
+        {
+            RayCast(input, out RaycastOutput output);
+            return output;
         }
 
         protected override void OnToolUpdate()
@@ -76,24 +77,10 @@ namespace Picker
                 m_ignoreParkFlags = DistrictPark.Flags.All
             };
 
+            objectBuffer = PropLayer.Manager.GetObjectBuffer(input);
+
             //RayCast(input, out RaycastOutput output);
-            /* PropAPI RayCast is a delegated version, and when called will incur low overhead when without EML, and no overhead when with EML */
-            PropAPI.RayCast(input, out EToolBase.RaycastOutput output);
-
-            // Set the world mouse position (useful for my implementation of StepOver)
-            mouseCurrentPosition = output.m_hitPos;
-
-            objectBuffer.Clear();
-
-            if (output.m_netSegment != 0) objectBuffer.Add(new InstanceID() { NetSegment = (ushort)output.m_netSegment });
-            if (output.m_treeInstance != 0) objectBuffer.Add(new InstanceID() { Tree = output.m_treeInstance });
-            /* EInstanceID and InstanceID can be used interchangeably whether EML exists or not */
-            if (output.m_propInstance != 0) objectBuffer.Add(new EInstanceID() { Prop = output.m_propInstance });
-            if (output.m_building != 0) objectBuffer.Add(new InstanceID() { Building = (ushort)output.m_building });
-
-            /* Getting "sqrMagnitude" is faster than "magnitude", which Vector3.Distance calls, where in this situation, the value is just used for comparison, instead of using it directly */
-            objectBuffer.Sort((a, b) => (a.Position() - mouseCurrentPosition).sqrMagnitude.CompareTo((b.Position() - mouseCurrentPosition).sqrMagnitude));
-            //objectBuffer.Sort((a, b) => Vector3.Distance(a.Position(), mouseCurrentPosition).CompareTo(Vector3.Distance(b.Position(), mouseCurrentPosition)));
+            
             if (objectBuffer.Count > 0)
             {
                 hoveredId = objectBuffer[0];
@@ -426,24 +413,35 @@ namespace Picker
             }
             else if (hoveredId.Building != 0)
             {
+                Building[] buildings = BuildingManager.instance.m_buildings.m_buffer;
                 ref Building hoveredBuilding = ref hoveredId.Building.B();
+                ushort subBuildingID = hoveredBuilding.m_subBuilding;
                 BuildingTool.RenderOverlay(cameraInfo, ref hoveredBuilding, hoverColor, hoverColor);
-                
-                while (hoveredBuilding.m_subBuilding > 0)
+
+                while (subBuildingID > 0)
                 {
-                    hoveredBuilding = ref BuildingManager.instance.m_buildings.m_buffer[hoveredBuilding.m_subBuilding];
-                    BuildingTool.RenderOverlay(cameraInfo, ref hoveredBuilding, hoverColor, hoverColor);
+                    BuildingTool.RenderOverlay(cameraInfo, ref buildings[subBuildingID], hoverColor, hoverColor);
+                    subBuildingID = buildings[subBuildingID].m_subBuilding;
                 }
+
+                //ref Building hoveredBuilding2 = ref hoveredId.Building.B();
+                //BuildingTool.RenderOverlay(cameraInfo, ref hoveredBuilding2, hoverColor, hoverColor);
+
+                //while (hoveredBuilding2.m_subBuilding > 0)
+                //{
+                //    hoveredBuilding2 = ref BuildingManager.instance.m_buildings.m_buffer[hoveredBuilding2.m_subBuilding];
+                //    BuildingTool.RenderOverlay(cameraInfo, ref hoveredBuilding2, hoverColor, hoverColor);
+                //}
             }
             else if (hoveredId.Tree != 0)
             {
                 ref TreeInstance hoveredTree = ref hoveredId.Tree.T();
                 TreeTool.RenderOverlay(cameraInfo, hoveredTree.Info, hoveredTree.Position, hoveredTree.Info.m_minScale, hoverColor);
             }
-            else if (PropAPI.GetPropID(hoveredId) != 0)
+            else if (PropLayer.Manager.GetId(hoveredId) != 0)
             {
-                PropInfo prefab = PropAPI.Wrapper.GetInfo(hoveredId);
-                PropTool.RenderOverlay(cameraInfo, prefab, PropAPI.Wrapper.GetPosition(hoveredId), prefab.m_minScale, PropAPI.Wrapper.GetAngle(hoveredId), hoverColor);
+                PropInfo prefab = PropLayer.Manager.GetInfo(hoveredId);
+                PropTool.RenderOverlay(cameraInfo, prefab, PropLayer.Manager.GetPosition(hoveredId), prefab.m_minScale, PropLayer.Manager.GetAngle(hoveredId), hoverColor);
             }
         }
     }
