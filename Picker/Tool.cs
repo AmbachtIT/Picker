@@ -3,6 +3,7 @@ using ColossalFramework.UI;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using UnifiedUI.Helpers;
 using UnityEngine;
 
 namespace Picker
@@ -12,10 +13,12 @@ namespace Picker
         public static PickerTool instance;
 
         internal UIPickerButton m_button;
+        public UIComponent UUIButton;
 
         public static SavedBool doSetFRTMode = new SavedBool("doSetFRT", Picker.settingsFileName, true, true);
         public static SavedBool openMenu = new SavedBool("openMenu", Picker.settingsFileName, true, true);
         public static SavedBool openMenuNetworks = new SavedBool("openMenuNetworks", Picker.settingsFileName, false, true);
+        public static SavedBool useUUI = new SavedBool("useUUI", Picker.settingsFileName, false, true);
 
         public InstanceID hoveredId = InstanceID.Empty;
 
@@ -63,7 +66,7 @@ namespace Picker
             RaycastInput input = new RaycastInput(ray, Camera.main.farClipPlane)
             {
                 m_ignoreTerrain = false,
-                m_ignoreSegmentFlags = NetSegment.Flags.Untouchable,
+                m_ignoreSegmentFlags = NetSegment.Flags.None,
                 m_ignoreNodeFlags = NetNode.Flags.All,
                 m_ignorePropFlags = PropInstance.Flags.None,
                 m_ignoreTreeFlags = TreeInstance.Flags.None,
@@ -443,6 +446,42 @@ namespace Picker
                 PropInfo prefab = PropLayer.Manager.GetInfo(hoveredId);
                 PropTool.RenderOverlay(cameraInfo, prefab, PropLayer.Manager.GetPosition(hoveredId), prefab.m_minScale, PropLayer.Manager.GetAngle(hoveredId), hoverColor);
             }
+        }
+
+        internal void EnableUUI()
+        {
+            if (!useUUI)
+            {
+                return;
+            }
+
+            try
+            {
+                var hotkeys = new UUIHotKeys { ActivationKey = OptionsKeymapping.toggleTool };
+                Texture2D texture = ResourceLoader.loadTextureFromAssembly("Picker.Icons.Picker.png");
+
+                UUIButton = UUIHelpers.RegisterToolButton(
+                    name: "PickerTool",
+                    groupName: null,
+                    tooltip: "Picker",
+                    tool: this,
+                    icon: texture,
+                    hotkeys: hotkeys
+                    );
+                m_button.Hide();
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e);
+                UIView.ForwardException(e);
+            }
+        }
+
+        internal void DisableUUI()
+        {
+            m_button?.Show();
+            UUIButton?.Destroy();
+            UUIButton = null;
         }
     }
 }

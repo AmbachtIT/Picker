@@ -160,5 +160,14 @@ namespace Picker.Localization {
                 return ResourceManager.GetString("options_Unknown", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use UnifiedUI.
+        /// </summary>
+        internal static string options_UseUUI {
+            get {
+                return ResourceManager.GetString("options_UseUUI", resourceCulture);
+            }
+        }
     }
 }

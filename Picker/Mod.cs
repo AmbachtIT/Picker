@@ -15,7 +15,7 @@ namespace Picker
     {
         static CultureInfo Culture => new CultureInfo(SingletonLite<LocaleManager>.instance.language == "zh" ? "zh-cn" : SingletonLite<LocaleManager>.instance.language);
 
-        public string Name => "Picker 1.6.5";
+        public string Name => "Picker 1.6.7";
         public string Description => Localize.mod_Description;
         public const string settingsFileName = "Picker";
 
@@ -150,6 +150,13 @@ namespace Picker
             checkBox = (UICheckBox)group.AddCheckbox(Localize.options_OpenMenuNetworks, PickerTool.openMenuNetworks.value, (b) =>
             {
                 PickerTool.openMenuNetworks.value = b;
+            });
+
+            checkBox = (UICheckBox)group.AddCheckbox(Localize.options_UseUUI, PickerTool.useUUI.value, (b) =>
+            {
+                PickerTool.useUUI.value = b;
+                PickerTool.instance?.DisableUUI();
+                PickerTool.instance?.EnableUUI();
             });
 
             group.AddSpace(10);

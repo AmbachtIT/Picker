@@ -154,4 +154,8 @@ Hold Control while clicking to invert this behaviour.</value>
   <data name="options_OpenMenuNetworks" xml:space="preserve">
     <value>Only for networks</value>
   </data>
+  <data name="options_UseUUI" xml:space="preserve">
+    <value>Use UnifiedUI</value>
+    <comment>Do not translate 'UnifiedUI'</comment>
+  </data>
 </root>

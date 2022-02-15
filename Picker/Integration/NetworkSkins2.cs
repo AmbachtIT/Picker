@@ -40,7 +40,7 @@ namespace Picker
         {
             foreach (PluginManager.PluginInfo pluginInfo in Singleton<PluginManager>.instance.GetPluginsInfo())
             {
-                if (pluginInfo.userModInstance.GetType().Name.ToLower() == "networkskinsmod" && pluginInfo.isEnabled)
+                if (pluginInfo.userModInstance?.GetType().Name.ToLower() == "networkskinsmod" && pluginInfo.isEnabled)
                 {
                     // Network Skins 1 - unsupported - uses CimTools
                     if (pluginInfo.GetAssemblies().Any(mod => mod.GetName().Name.ToLower() == "cimtools"))
