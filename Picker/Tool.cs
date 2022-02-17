@@ -33,6 +33,10 @@ namespace Picker
             enabled = false;
 
             m_button = UIView.GetAView().AddUIComponent(typeof(UIPickerButton)) as UIPickerButton;
+            if (useUUI)
+            {
+                EnableUUI();
+            }
 
             PropLayer.Initialise();
         }
