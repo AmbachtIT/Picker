@@ -19,7 +19,7 @@ namespace Picker.Localization {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Localize {
@@ -134,7 +134,7 @@ namespace Picker.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Set ground/elevated/etc mode in Fine Road Tool.
+        ///   Looks up a localized string similar to Set ground/elevated/etc mode in Network Anarchy or Fine Road Tool.
         /// </summary>
         internal static string options_SetFRTMode {
             get {
@@ -143,7 +143,7 @@ namespace Picker.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If FRT is enabled, should Picker set Ground/Elevated/etc to match picked segment?
+        ///   Looks up a localized string similar to If Network Anarchy or FRT is enabled, should Picker set Ground/Elevated/etc to match picked segment?
         ///Hold Shift while clicking to invert this behaviour..
         /// </summary>
         internal static string options_SetFRTMode_Tooltip {

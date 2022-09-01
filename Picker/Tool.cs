@@ -348,40 +348,48 @@ namespace Picker
                 {
                     if (AssetEditorRoadUtils.TryGetBridge(prefab) != null && AssetEditorRoadUtils.TryGetBridge(prefab).name == info.name)
                     {
-                        FRTSet("BridgeMode");
+                        NetworkAnarchySet("BridgeMode");
                     }
                     else if (AssetEditorRoadUtils.TryGetElevated(prefab) != null && AssetEditorRoadUtils.TryGetElevated(prefab).name == info.name)
                     {
-                        FRTSet("ElevatedMode");
+                        NetworkAnarchySet("ElevatedMode");
                     }
                     else if (AssetEditorRoadUtils.TryGetTunnel(prefab) != null && AssetEditorRoadUtils.TryGetTunnel(prefab).name == info.name)
                     {
-                        FRTSet("TunnelMode");
+                        NetworkAnarchySet("TunnelMode");
                     }
                     else
                     {
-                        FRTSet("GroundMode");
+                        NetworkAnarchySet("GroundMode");
                     }
 
                     return prefab;
                 }
                 else if (prefab == info)
                 {
-                    FRTSet("GroundMode");
+                    NetworkAnarchySet("GroundMode");
                 }
             }
             return info;
         }
 
-        private void FRTSet(string buttonName)
+        private void NetworkAnarchySet(string buttonName)
         {
             if (doSetFRTMode == Event.current.shift)
                 return;
 
-            UIButton button = FindComponentCached<UIButton>("FRT_" + buttonName);
+            UIButton button = FindComponentCached<UIButton>("NA_" + buttonName);
             if (button is UIComponent)
             {
                 SimulateClick(button);
+            }
+            else
+            {
+                button = FindComponentCached<UIButton>("FRT_" + buttonName);
+                if (button is UIComponent)
+                {
+                    SimulateClick(button);
+                }
             }
         }
 
