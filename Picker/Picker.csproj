@@ -84,6 +84,7 @@
     <EmbeddedResource Include="Icons\Picker.png" />
     <EmbeddedResource Include="Icons\Picker_focused.png" />
     <EmbeddedResource Include="Icons\Picker_hover.png" />
+    <EmbeddedResource Include="Localization\Localize.nl.resx" />
     <EmbeddedResource Include="Localization\Localize.de.resx" />
     <EmbeddedResource Include="Localization\Localize.es.resx" />
     <EmbeddedResource Include="Localization\Localize.fr.resx" />
